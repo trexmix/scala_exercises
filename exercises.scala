@@ -41,3 +41,32 @@ def penultimate[T](l: List[T]): T =
 def nth[T](n: Int, l: List[T]): T = {
     if (n == 0) l.head else nth(n - 1, l.tail)
 }
+
+/******************************************************************************
+* Find the number of elements of a list.                                      *
+******************************************************************************/
+
+def length[T](l: List[T]): Int = {
+    l match {
+        case Nil => 0
+       	// If the list has anything in it add one to the length of it's tail
+        case _ :: xs => 1 + length(xs)
+    }
+}
+
+/******************************************************************************
+* Reverse a list.                                                             *
+******************************************************************************/
+
+def reverse[T](l: List[T]): List[T] = {
+    l match {
+        case x :: Nil => List(x)
+        case x :: xs => reverse(xs) ::: List(x)
+    }
+}
+
+/******************************************************************************
+* Find out whether a list is a palindrome.                                    *
+******************************************************************************/
+
+def isPalindrome[T](l: List[T]): Boolean = l == l.reverse

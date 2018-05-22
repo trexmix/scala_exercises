@@ -70,3 +70,49 @@ def reverse[T](l: List[T]): List[T] = {
 ******************************************************************************/
 
 def isPalindrome[T](l: List[T]): Boolean = l == l.reverse
+
+/******************************************************************************
+* Flatten a nested list structure.                                            *
+******************************************************************************/
+
+// Not my solution- I looked up answer as I was struggling with syntax and I
+// feel like rewriting wouldn't be productive/would just be derivative
+def flatten(ls: List[Any]): List[Any] = ls flatMap {
+    case ms: List[_] => flatten(ms)
+    case e => List(e)
+}
+
+/******************************************************************************
+* Eliminate consecutive duplicates of list elements.                          *
+******************************************************************************/
+
+def compress(ls: List[Any]): List[Any] = 
+  ls match {
+      case x :: y :: xs => if (x == y) compress(x :: xs) else x :: compress(y :: xs)
+      case _ => ls
+  }
+
+/******************************************************************************
+* Pack consecutive duplicates of list elements into sublists.                 *
+******************************************************************************/
+
+def pack[T](ls: List[T]): List[List[T]] = {
+  // Empty list, just need correct return type
+  if (ls.isEmpty) List(List())
+  else {
+  	// Split list into two parts, first part is all elements matching the head
+    val (matched, rest) = ls span { _ == ls.head}
+    // If no elements don't match head, just make a list out of all of the 
+    // (we know) matching elements
+    if (rest == Nil) List(matched)
+    // Else, put the matching elements in a list, and repeat the process and
+	// add it to the end
+    else matched :: pack(rest)
+  }
+}
+
+/******************************************************************************
+* Run-length encoding of a list.                                              *
+******************************************************************************/
+
+def encode[T](ls: List[T]): List[(Int, T)] = pack(ls).map(es => (es.length, es.head))
